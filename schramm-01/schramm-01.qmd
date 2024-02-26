@@ -1,0 +1,1072 @@
+---
+title: "DATA INVENTORY, WATERSHED CHARACTERIZATION & SUFFICIENT DATA"
+author:
+ - name: Michael Schramm
+   email: michael.schramm@ag.tamu.edu
+   affiliation: TWRI, Texas A&M AgriLife Research
+institute: Fundamentals of Developing a Water Quality Monitoring Plan
+date: March 5, 2024
+bibliography: refs.bib
+
+format: 
+  txwri-revealjs:
+    mermaid: 
+      theme: forest
+embed-resources: true
+---
+
+## What are we covering?
+
+- **Data Inventory:** What data do you need, where to obtain it, best practices to maintain it.
+- **Watershed Characterization:** What is it and provide an overview of approaches.
+- **Data Sufficiency:** Do you have the data you need? Do you have enough data?
+
+
+# Inventory and Acquire Existing Data
+
+::: {.notes}
+We are primarily talking about how you acquire, document, and store your data.
+:::
+
+## Major steps
+
+```{mermaid}
+flowchart LR
+  A(Determine data needs) --> one
+  subgraph one[Create and maintain inventory]
+    direction TB
+    D --> B
+    B(Identify available data) --> C(Locate the information)
+    C --> D(Gather and organize data)
+  end
+  one --> E[(Data inventory)]
+```
+
+
+## Determine data needs
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{mermaid}
+%%| mermaid-format: png
+%%| fig-height: 2
+
+flowchart LR
+  A("`**Determine data needs**`"):::hlbg --> one
+  subgraph one[Create and maintain inventory]
+    direction TB
+    D --> B
+    B(Identify available data) --> C(Locate the information)
+    C --> D(Gather and organize data)
+  end
+  one --> E[(Data inventory)]
+  classDef hlbg stroke:#e64173,stroke-width:4px
+```
+
+:::
+
+::: {.column width="50%"}
+
+While you are scoping and planning a project:
+
+- Identify stakeholder concerns
+- Identify watershed goals
+- Define conceptual models
+
+:::
+
+::::
+
+::: {.notes}
+Your project scoping period helps determine data needs.
+A lot of this is established by watershed planning processes.
+What questions do you need to answer?
+For example, you may not have a good grasp on what the general water quality is or maybe you are trying to track the source(s) of the impairment.
+Or you know the problem but don't know what is needed to improve water quality.
+Finally, maybe you just need to evaluate if progress is being made.
+This will help you define the required models or approaches, and define the data oyu need to gather or collect.
+:::
+
+## Identify available data
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{mermaid}
+%%| mermaid-format: png
+%%| fig-height: 2
+
+flowchart LR
+  A(Determine data needs) --> one
+  subgraph one[Create and maintain inventory]
+    direction TB
+    D --> B
+    B("`**Identify available data**`"):::hlbg --> C(Locate the information)
+    C --> D(Gather and organize data)
+  end
+  one --> E[(Data inventory)]
+  classDef hlbg stroke:#e64173,stroke-width:4px
+```
+
+:::
+
+::: {.column width="50%"}
+
+- Use existing data if/when available!
+- Assess the quality/reliability of that data.
+- Talk to organizations that have conducted projects in the area.
+
+:::
+::::
+
+## Locating information
+
+What types of data will you need?
+
+- Watershed physical characteristics
+- Water quality
+- Streamflow
+- Climate
+- Pollutant sources
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Watershed physical characteristics
+
+:::
+
+::: {.column width="50%"}
+
+- Watershed boundaries
+- Hydrographic/Topographic
+- Soil
+- Vegetation, wildlife, etc.
+
+:::
+
+::::
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Watershed physical characteristics
+
+:::
+
+::: {.column width="50%"}
+
+- USGS NHD, NHD HR: [https://www.usgs.gov/national-hydrography/access-national-hydrography-products](https://www.usgs.gov/national-hydrography/access-national-hydrography-products)
+- NLCD, Imperviousness, Tree Canopy, etc.: [https://www.mrlc.gov/](https://www.mrlc.gov/)
+- NRCS Soil Survey:[https://websoilsurvey.nrcs.usda.gov/app/](https://websoilsurvey.nrcs.usda.gov/app/)
+
+
+:::
+
+::::
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Water quality
+
+![](images/20230626_TWRI_Water_MM_319.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- Routine water quality
+- Stormwater/runoff monitoring
+- Storm/flow biased water quality
+- Benthic and other stream surveys
+
+:::
+
+::::
+
+::: {.attribution}
+
+{{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
+
+Photo credit Michael Miller 
+
+:::
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Water quality
+
+![](images/20230626_TWRI_Water_MM_319.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- TCEQ SWQM, Integrated Reports
+- CRP Partners
+- National Water Quality Portal (successor to STORET): [https://www.waterqualitydata.us/](https://www.waterqualitydata.us/)
+- Hydroshare: [https://www.hydroshare.org/](https://www.hydroshare.org/)
+- TPWD Bioassessment Studies
+- Texas Stream Team Citizen Science Data
+
+:::
+
+::::
+
+::: {.attribution}
+
+{{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
+
+Photo credit Michael Miller 
+
+:::
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Streamflow
+
+![](images/20230620_TWRI_Water_MM_613.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- Daily/instantaneous streamflow
+- Inundation/tidal data
+
+:::
+
+::::
+
+::: {.attribution}
+
+{{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
+
+Photo credit Michael Miller 
+
+:::
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Streamflow
+
+![](images/20230620_TWRI_Water_MM_613.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- National Water Information Service: [https://waterdata.usgs.gov/nwis](https://waterdata.usgs.gov/nwis)
+- Water Data for Texas: [https://waterdatafortexas.org](https://waterdatafortexas.org)
+- Hydroshare: [https://www.hydroshare.org/](https://www.hydroshare.org/)
+- NOAA: [https://tidesandcurrents.noaa.gov/](https://tidesandcurrents.noaa.gov/)
+:::
+
+::::
+
+::: {.attribution}
+
+{{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
+
+Photo credit Michael Miller 
+
+:::
+
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Climate
+
+![](images/20211215_Weather_Station_LM_0039.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- Precipitation
+- Temperature/solar radiation
+- Wind direction/speed
+
+:::
+
+::::
+
+::: {.attribution}
+
+{{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
+
+Photo credit Laura McKenzie
+
+:::
+
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Climate
+
+![](images/20211215_Weather_Station_LM_0039.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- NOAA Climate Data Online: [https://www.ncei.noaa.gov/cdo-web/](https://www.ncei.noaa.gov/cdo-web/)
+- OSU PRISM Climate Group: [https://prism.oregonstate.edu/](https://prism.oregonstate.edu/)
+
+:::
+
+::::
+
+
+
+::: {.attribution}
+
+{{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
+
+Photo credit Laura McKenzie
+
+:::
+
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Pollution Sources
+
+![](images/ossf.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- Permitted discharges
+- Non-permitted sources
+
+
+:::
+
+::::
+
+::: {.attribution}
+
+Photo credit Ryan Gerlich (Texas A&M AgriLife Extension)
+
+:::
+
+
+## Locating information
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Pollution Sources
+
+![](images/ossf.jpg)
+
+:::
+
+::: {.column width="50%"}
+
+- EPA ECHO: [https://echo.epa.gov/](https://echo.epa.gov/)
+- TCEQ Water Quality General Permits: [https://www2.tceq.texas.gov/wq_dpa/index.cfm](https://www2.tceq.texas.gov/wq_dpa/index.cfm)
+- TCEQ Central Registry: [https://www15.tceq.texas.gov/crpub/](https://www15.tceq.texas.gov/crpub/)
+- Non-permitted sources: Often derived from secondary data sources (Census data, 911 addresses, wildlife surveys, etc.)
+
+
+:::
+
+::::
+
+::: {.attribution}
+
+Photo credit Ryan Gerlich (Texas A&M AgriLife Extension)
+
+:::
+
+## Gather and organize data
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{mermaid}
+%%| mermaid-format: png
+%%| fig-height: 2
+
+flowchart LR
+  A(Determine data needs) --> one
+  subgraph one[Create and maintain inventory]
+    direction TB
+    D --> B
+    B(Identify available data) --> C(Locate the information)
+    C --> D("`**Gather and organize data**`"):::hlbg
+  end
+  one --> E[(Data inventory)]
+  classDef hlbg stroke:#e64173,stroke-width:4px
+```
+:::
+
+::: {.column width="50%"}
+Basic Principles:
+
+- Create a project specific data folder or database.
+- Maintain living project documentation.
+- Use data exploration and summary methods to get a "picture" of the data.
+:::
+::::
+
+## Gather and organize data
+
+Documentation should identify:
+
+- Types of data (monitoring, geographic)
+- Source
+- Quality
+- Representativeness
+- Spatial coverage
+- Temporal coverage
+- Data gaps
+- Units and variable names
+
+Your QAPP is a good starting point.
+
+## Gather and organize data
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Best practices:
+
+- Consistent terminology and file naming (ex. Nitrate as nitrogen, NO~3~-N, or nitrate...).
+- Standardized dates (highly suggest YYYY-MM-DD formatting).
+- Use non-proprietary files where possible (plain-text, csv, etc.).
+- What are your data storage practices?
+
+:::
+
+::: {.column width="40%"}
+
+![](images/documents.png)
+:::
+::::
+
+::: {.attribution}
+
+Licensed under Creative Commons CC BY-NC 2.5 DEED
+
+Image: [https://xkcd.com/1459/](https://xkcd.com/1459/)
+
+:::
+
+
+## Gather and organize data
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Spreadsheet best practices:
+
+- No empty cells: specify no value, NA, zero, infinity, etc.
+- One value per cell.
+- Do not use font color, cell color, or comments, as data.
+
+
+:::
+::: {.column width="50%"}
+
+![](images/woo.png)
+
+Data Organization in Spreadsheets:
+[https://doi.org/10.1080/00031305.2017.1375989](https://doi.org/10.1080/00031305.2017.1375989)
+:::
+::::
+
+# Watershed Characterization  {background-image="images/Tres_Palacios_PHOTO_BY_ED_RHODES-001.JPG" background-size="cover" background-position="top" background-opacity="0.15"} 
+
+::: {.attribution}
+Photo courtesy of Ed Rhodes
+:::
+
+
+## What is a Watershed Characterization?
+
+An assessment of past and current conditions within a watershed to support water quality management decisions
+
+## What is a Watershed Characterization?
+
+Can have different objectives:
+
+- Is there a (or where is the) water quality problem?
+- Compare and define current and desired conditions.
+- Estimate allowable loadings for point source permits or TMDLs
+- Evaluate and recommend best management practices
+- Assess trends or changes in water quality
+
+(not an exhaustive list...)
+
+## How do we do it?
+
+*Depends* on our objectives!
+
+Objectives determine the statistical design and data (monitoring requirements)
+
+## General approaches
+
+* Reconnaissance
+* Plot studies
+* Watershed(s) study
+
+## Reconnaissance
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Objective: Identify if or where there is a water quality problem.
+
+* AKA routine or ambient water quality
+* Provides a snapshot of water quality at a given point in time
+* Limited statistical application (summary statistics or probability of exceedance)
+* TCEQ assessments manual provides baseline methods for comparison.
+
+:::
+
+::: {.column width="40%"}
+
+![](images/granbury.png)
+
+:::
+
+::::
+
+## Reconnaissance
+
+Advantages:
+
+* You might already have enough data (CRP monitoring)
+* Large spatial coverage
+* Useful to pinpoint problematic areas
+
+## Reconnaissance
+
+Disadvantages:
+
+* Biased towards baseflows
+* Possibly low sampling frequency in existing data
+* Sampling locations are biased
+
+
+## Plot studies
+:::: {.columns}
+
+::: {.column width="50%"}
+Objective: Evaluate differences in conditions or treatments
+
+Experimental trials on multiple plots involving treatment and control replicates. Treatments are small plots where runoff can be routed to a single measurement point per treatment.
+:::
+
+::: {.column width="50%"}
+![](images/plot.png)
+:::
+
+::::
+::: {.attribution}
+
+Image @usdanrcsNationalWaterQuality2003
+
+:::
+
+## Plot studies
+
+Often used to evaluate the impact of BMPs on runoff quality.
+
+Advantages:
+
+* Well designed experiments have strong statistical power (reliability for detecting true effects)
+* Ability to control for environmental conditions
+
+## Plot studies
+
+Disadvantages:
+
+* Cost
+* Conditions may not represent real world conditions
+* Results are sometimes (often?) condition specific
+
+## Plot studies
+
+![](images/plot_ok.jpg)
+
+::: {.attribution}
+
+{{< fa copyright >}} TWRI
+
+Photo credit Jason Gerlich 
+
+:::
+
+::: {.notes}
+Don't underestimate the cost and work needed for plot studies.
+:::
+
+
+## Watershed studies
+
+
+
+Objective: Evaluate Best Management Practices (BMPs), assess trends.
+
+Multiple potential study designs:
+
+| **Design**            | **Causal factors**  |
+|-----------------------|---------------------|
+| Single watershed - before/after | BMPs, Climate |
+| Single watershed - upstream/downstream   | BMP,  within watershed factors  |
+| Paired watershed - BACI | BMP   |
+
+: {tbl-colwidths="[70,30]"}
+
+
+## Single watershed
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Objective: Evaluate conditions before and after implementation, or trend analysis.
+
+* Single monitoring site at the outlet of a watershed.
+* Relatively inexpensive.
+* Difficult to separate effects due to changes climate or other watershed changes.
+
+:::
+
+::: {.column width="40%"}
+
+![Single watershed (before/after implementation.)](images/single_watershed.png)
+:::
+
+::::
+
+::: {.attribution}
+
+Image @usdanrcsNationalWaterQuality2003
+
+:::
+
+## Single watershed
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Objective: Evaluate conditions before and after implementation, or trend analysis.
+
+* Monitoring before and after implementation.
+* Monitor upstream and downstream of implementation.
+* Accounts for some differences within the watershed.
+* Disadvantage, downstream measurements are not fully independent of the upstream measurements.
+
+:::
+
+::: {.column width="40%"}
+
+![Single watershed (above/below implementation.)](images/above_below.png)
+
+
+
+:::
+
+::::
+
+::: {.attribution}
+
+Image @usdanrcsNationalWaterQuality2003
+
+:::
+
+
+
+## Paired watershed
+
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Objective: Evaluate conditions before and after implementation, or trend analysis.
+
+* Monitor before and after in calibration and treatment watersheds
+* Two or more watersheds
+* One watershed always serves as a control
+
+
+:::
+
+::: {.column width="40%"}
+
+![Single watershed (above/below implementation.)](images/paired.png)
+
+
+
+:::
+
+::::
+
+::: {.attribution}
+
+Image @usdanrcsNationalWaterQuality2003
+
+:::
+
+
+
+## Paired watershed
+
+Advantages:
+
+* Can be statistically powerful.
+* Can evaluate multiple treatments.
+* Helps control for environmentally induced variation not associated with treatment.
+* Statistical independence between treatment/pre-treatment measurements.
+* Regionally relevant results.
+
+## Paired watershed
+
+Disadvantage:
+
+* Requires long study period.
+* Lag effects can be gradual masking difference with control [@mealsLagTimeWater2010].
+* Can be hard to find two watersheds that won't have any other distrubrances for the entire study period.
+* Logistics.
+
+
+
+## Trends analysis
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Objective: Assess a trend or change in water quality parameters at a single or multiple location.
+
+* Evaluate effect size over time.
+* Doesn't require "reference" watersheds but can be helpful.
+
+:::
+
+::: {.column width="40%"}
+
+
+![](images/trends.png)
+
+:::
+::::
+
+::: {.attribution}
+
+Image @helselStatisticalMethodsWater2020
+
+:::
+
+## Trends analysis
+
+Advantages:
+
+* Can use a single station.
+* Useful for practices with long-lag times.
+* Useful for assessing larger watersheds with many implementation activities.
+
+## Trends analysis
+
+Disadvantages:
+
+* Typically requires long-term data (10-20 years).
+* High chance of changes in watershed and lab methodologies.
+
+
+
+
+## Sufficient data
+
+Depends on:
+
+* Statistical design
+* Variability of measurement parameters
+* Relevent effect size
+
+## Sufficient data
+
+Things to consider:
+
+* Adequate number of sites
+* Adequate number of samples
+* Frequency of samples
+* Monitoring duration
+
+## Sufficient data
+
+Available tools:
+
+* TCEQ assessment criteria (for ambient water quality)
+* Statistical power analysis
+
+
+## Additional theme classes
+
+### Some extra things you can do with the txwri-revealjs theme
+
+Special classes for emphasis
+
+- `.alert` class for default emphasis, e.g. [important note]{.alert}.
+- `.fg` class for custom colour, e.g. [important note]{.fg style="--col: #e64173"}.
+- `.bg` class for custom background, e.g. [important note]{.bg style="--col: #e64173"}.
+
+
+
+## Components
+
+### Citations
+
+Citations follow the standard
+[Quarto format](https://quarto.org/docs/authoring/footnotes-and-citations.html#citations)
+and be sourced from BibLaTex, BibTeX, or CLS files. For example:
+
+ - [Topic 1:]{.alert} Stats and trends [@helselStatisticalMethodsWater2020; @schrammTotalMaximumDaily2022]
+
+- [Topic 2:]{.alert} Watershed governance [@biddleImprovingEffectivenessCollaborative2017]
+
+## Components
+
+### Blocks
+
+Quarto provides
+[dedicated environments](https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs)
+for theorems, lemmas, and so forth. 
+
+But in presentation format, it's arguably more effective just to use a
+[Callout Block](https://quarto.org/docs/authoring/callouts.html).
+
+:::{.callout-note}
+## Regression Specification
+
+The main specification is as follows:
+
+$$
+y_{it} = X_{it} \beta + \mu_i + \varepsilon_{it}
+$$
+:::
+
+## Components
+
+### Multicolumn I: Text only
+
+:::: {.columns}
+
+::: {.column width="50%"}
+#### Column 1
+
+Here is a long sentence that will wrap onto the next line as it hits the column
+width, and continue this way until it stops.
+:::
+
+::: {.column width="50%"}
+#### Column 2
+
+Some other text in another column.
+
+A second paragraph.
+:::
+
+::::
+
+Multicolumn support is very flexible and we can continue with a single full
+span column in the same slide.
+
+## Components
+
+### Multicolumn II: Text and figures
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](images/kanagawa.jpg){width="70%"}
+:::
+
+::: {.column width="50%"}
+
+- A point about the figure that is potentially important.
+- Another point about the figure that is also potentially important.
+:::
+
+::::
+
+Note that sub- and multi-panel figures are also natively supported by Quarto.
+See [here](https://quarto.org/docs/authoring/figures.html#subfigures).
+
+## Components
+
+### Multicolumn III: Code and output
+
+```{r}
+#| echo: true
+#| label: fig-pairs
+#| fig-cap: "Pairwise scatterplot" 
+#| fig-asp: 1
+#| out-width: 75%
+#| output-location: column
+
+palette("Classic Tableau")
+
+par(
+  family = "HersheySans",
+  las = 1, pch = 19, cex = 1.5
+)
+
+pairs(
+  iris[,1:4],
+  col=iris$Species
+)
+```
+
+
+# Figures {background-color="#0054a4"}
+
+## Figure
+
+![](images/Tres_Palacios_PHOTO_BY_ED_RHODES-001.JPG){width="75%" fig-align="center"}
+
+::: {.attribution}
+Photo courtesy of Ed Rhodes
+:::
+
+## Figure {background-image="images/kanagawa.jpg" background-size="cover" background-position="top" background-opacity="0.15"} 
+
+### Full-size Figures
+
+You can use the `{.background-image}` container environment to completely fill
+the slide background with an image.
+
+Ideally, your figure will be the same aspect ratio as the screen that you're presenting on.
+
+- This can be a bit tricky because of the dynamic nature of reveal.js / HTML. But it's probably something close to 16:9.
+- Aspect ratio can also matter for a regular full-frame images (previous slide).
+
+
+
+## Contact us
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/phone.png)
+
+:::
+
+::: {.column width="50%"}
+
+We'd love to talk about all things water
+
+- {{< fa phone >}} 979.314.2824
+
+- {{< fa envelope >}}  <a href = "mailto: twri@tamu.edu">twri@tamu.edu</a>
+
+- {{< fa computer >}}  [twri.tamu.edu](twri.tamu.edu)
+
+:::
+
+::::
+
+## References
+
+::: {#refs}
+:::
+
+
+# Extra slides
+
+
+## Types of data
+
+Qualitative, quantitative, geospatial, temporal, etc.
+
+## Qualitative data
+
+- Historic documentation (newspaper articles, interviews)
+- Some types of metadata
+- Photographs
+- Comments field in SWQM data
+
+## Qualitative data
+
+- Provides sense of place
+- Why and when things changes
+
+## Spatial data
+
+- Remotely sensed gridded data 
+Primarily land cover and elevation
+
+## Spatial data
+
+- Modeled gridded data
+Precipitation, ET/PET, solar radiation etc.
+
+Useful inputs for watershed models (SWAT, etc.)
+
+## Spatial data
+
+- Topological data
+
+Primarily stream networks and associated waterbodies
+
+## Quantitative data
+
+Primarily interested in:
+- Streamflow/discharge
+- Discrete or continuous water quality
