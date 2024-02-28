@@ -637,9 +637,8 @@ Disadvantages:
 * Conditions may not represent real world conditions
 * Results are sometimes (often?) condition specific
 
-## Plot studies
+## Plot studies {background-image="images/plot_ok.jpg" background-size="cover" background-position="top"} 
 
-![](images/plot_ok.jpg)
 
 ::: {.attribution}
 
@@ -708,8 +707,42 @@ Objective: Evaluate conditions before and after implementation, or trend analysi
 
 * Monitoring before and after implementation.
 * Monitor upstream and downstream of implementation.
-* Accounts for some differences within the watershed.
-* Disadvantage, downstream measurements are not fully independent of the upstream measurements.
+
+:::
+
+::: {.column width="40%"}
+
+![Single watershed (above/below implementation.)](images/above_below.png)
+
+
+
+:::
+
+::::
+
+::: {.attribution}
+
+Image @usdanrcsNationalWaterQuality2003
+
+:::
+
+
+
+## Single watershed
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+Advantages:
+
+* Accounts for some differences within the watershed
+* Costs
+ 
+Disadvantages:
+
+* Downstream measurements are not independent of upstream measurements
+
 
 :::
 
@@ -823,11 +856,25 @@ Advantages:
 
 ## Trends analysis
 
+:::: {.columns}
+
+::: {.column width="40%"}
+
 Disadvantages:
 
 * Typically requires long-term data (10-20 years).
 * High chance of changes in watershed and lab methodologies.
+* Trends are sensitive to the chosen time period.
 
+:::
+
+::: {.column width="60%"}
+
+![](images/trends_streamflow.png)
+@schrammAssessingLinkagesWatershed2023
+:::
+
+::::
 
 
 
@@ -837,7 +884,7 @@ Depends on:
 
 * Statistical design
 * Variability of measurement parameters
-* Relevent effect size
+* Relevant effect size
 
 ## Sufficient data
 
@@ -855,146 +902,22 @@ Available tools:
 * TCEQ assessment criteria (for ambient water quality)
 * Statistical power analysis
 
-
-## Additional theme classes
-
-### Some extra things you can do with the txwri-revealjs theme
-
-Special classes for emphasis
-
-- `.alert` class for default emphasis, e.g. [important note]{.alert}.
-- `.fg` class for custom colour, e.g. [important note]{.fg style="--col: #e64173"}.
-- `.bg` class for custom background, e.g. [important note]{.bg style="--col: #e64173"}.
-
-
-
-## Components
-
-### Citations
-
-Citations follow the standard
-[Quarto format](https://quarto.org/docs/authoring/footnotes-and-citations.html#citations)
-and be sourced from BibLaTex, BibTeX, or CLS files. For example:
-
- - [Topic 1:]{.alert} Stats and trends [@helselStatisticalMethodsWater2020; @schrammTotalMaximumDaily2022]
-
-- [Topic 2:]{.alert} Watershed governance [@biddleImprovingEffectivenessCollaborative2017]
-
-## Components
-
-### Blocks
-
-Quarto provides
-[dedicated environments](https://quarto.org/docs/authoring/cross-references.html#theorems-and-proofs)
-for theorems, lemmas, and so forth. 
-
-But in presentation format, it's arguably more effective just to use a
-[Callout Block](https://quarto.org/docs/authoring/callouts.html).
-
-:::{.callout-note}
-## Regression Specification
-
-The main specification is as follows:
-
-$$
-y_{it} = X_{it} \beta + \mu_i + \varepsilon_{it}
-$$
-:::
-
-## Components
-
-### Multicolumn I: Text only
-
+## Sufficient data
 :::: {.columns}
 
-::: {.column width="50%"}
-#### Column 1
+::: {.column width="70%"}
 
-Here is a long sentence that will wrap onto the next line as it hits the column
-width, and continue this way until it stops.
+![](images/power.png)
+
 :::
 
-::: {.column width="50%"}
-#### Column 2
+::: {.column width="30%"}
 
-Some other text in another column.
+Example power analysis for trend tests on *E. coli* concentrations over 10-years [@schrammEstimatingStatisticalPower2021].
 
-A second paragraph.
 :::
-
 ::::
 
-Multicolumn support is very flexible and we can continue with a single full
-span column in the same slide.
-
-## Components
-
-### Multicolumn II: Text and figures
-
-:::: {.columns}
-
-::: {.column width="50%"}
-![](images/kanagawa.jpg){width="70%"}
-:::
-
-::: {.column width="50%"}
-
-- A point about the figure that is potentially important.
-- Another point about the figure that is also potentially important.
-:::
-
-::::
-
-Note that sub- and multi-panel figures are also natively supported by Quarto.
-See [here](https://quarto.org/docs/authoring/figures.html#subfigures).
-
-## Components
-
-### Multicolumn III: Code and output
-
-```{r}
-#| echo: true
-#| label: fig-pairs
-#| fig-cap: "Pairwise scatterplot" 
-#| fig-asp: 1
-#| out-width: 75%
-#| output-location: column
-
-palette("Classic Tableau")
-
-par(
-  family = "HersheySans",
-  las = 1, pch = 19, cex = 1.5
-)
-
-pairs(
-  iris[,1:4],
-  col=iris$Species
-)
-```
-
-
-# Figures {background-color="#0054a4"}
-
-## Figure
-
-![](images/Tres_Palacios_PHOTO_BY_ED_RHODES-001.JPG){width="75%" fig-align="center"}
-
-::: {.attribution}
-Photo courtesy of Ed Rhodes
-:::
-
-## Figure {background-image="images/kanagawa.jpg" background-size="cover" background-position="top" background-opacity="0.15"} 
-
-### Full-size Figures
-
-You can use the `{.background-image}` container environment to completely fill
-the slide background with an image.
-
-Ideally, your figure will be the same aspect ratio as the screen that you're presenting on.
-
-- This can be a bit tricky because of the dynamic nature of reveal.js / HTML. But it's probably something close to 16:9.
-- Aspect ratio can also matter for a regular full-frame images (previous slide).
 
 
 
@@ -1012,9 +935,9 @@ Ideally, your figure will be the same aspect ratio as the screen that you're pre
 
 We'd love to talk about all things water
 
-- {{< fa phone >}} 979.314.2824
+- {{< fa phone >}} 979.314.2356
 
-- {{< fa envelope >}}  <a href = "mailto: twri@tamu.edu">twri@tamu.edu</a>
+- {{< fa envelope >}}  <a href = "mailto: michael.schramm@ag.tamu.edu">michael.schramm@ag.tamu.edu</a>
 
 - {{< fa computer >}}  [twri.tamu.edu](twri.tamu.edu)
 
@@ -1028,45 +951,4 @@ We'd love to talk about all things water
 :::
 
 
-# Extra slides
 
-
-## Types of data
-
-Qualitative, quantitative, geospatial, temporal, etc.
-
-## Qualitative data
-
-- Historic documentation (newspaper articles, interviews)
-- Some types of metadata
-- Photographs
-- Comments field in SWQM data
-
-## Qualitative data
-
-- Provides sense of place
-- Why and when things changes
-
-## Spatial data
-
-- Remotely sensed gridded data 
-Primarily land cover and elevation
-
-## Spatial data
-
-- Modeled gridded data
-Precipitation, ET/PET, solar radiation etc.
-
-Useful inputs for watershed models (SWAT, etc.)
-
-## Spatial data
-
-- Topological data
-
-Primarily stream networks and associated waterbodies
-
-## Quantitative data
-
-Primarily interested in:
-- Streamflow/discharge
-- Discrete or continuous water quality
