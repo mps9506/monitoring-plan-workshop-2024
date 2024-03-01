@@ -199,7 +199,7 @@ What types of data will you need?
 
 ::::
 
-::: {.attribution}
+::: footer
 
 {{< fa copyright >}} Texas A&M AgriLife Marketing and Communications
 
@@ -782,7 +782,7 @@ Objective: Evaluate conditions before and after implementation, or trend analysi
 
 ::: {.column width="40%"}
 
-![Single watershed (above/below implementation.)](images/paired.png)
+![Paired watersheds; before-after control-impact (BACI)](images/paired.png)
 
 
 
