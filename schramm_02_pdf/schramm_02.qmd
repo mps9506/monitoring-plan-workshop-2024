@@ -1,0 +1,243 @@
+---
+title: "STATISTICAL TOOLS FOR ANALYSIS"
+author: "Michael Schramm"
+institute: "TWRI, Texas A&M AgriLife Research"
+subtitle: "Fundamentals of Developing a Water Quality Monitoring Plan"
+date: March 5, 2024
+format: 
+  beamer-presentation:
+    classoption: "presentation"
+    theme: metropolis
+    themeoptions: 
+     - '`progressbar={frametitle}`{=latex}'
+    pdf-engine: lualatex
+  beamer-notes: 
+    beameroption: "show only notes"
+    classoption: "presentation"
+    theme: metropolis
+    themeoptions: 
+     - '`progressbar={frametitle}`{=latex}'
+    pdf-engine: lualatex
+header-includes: |
+  \definecolor{twriblue}{RGB}{0, 84, 164}
+  \setbeamercolor{palette primary}{bg=twriblue}
+
+
+cite-method: biblatex
+bibliography: refs.bib
+biblio-style: apa
+
+knitr: 
+  opts_chunk:
+    dev: "ragg_png"
+    dpi: 200
+
+---
+
+
+
+# Statistical Tools for Analysis
+
+* Base concepts
+* Graphical analysis and data exploration
+* Statistical design for watershed studies
+
+\note<1>{This is going to be a whirlwind tour of some statistical tools available to analyze watershed data. I know everyone is coming in here with different levels of knowledge of statistics and some (or many) dislike stats. So I'm trying not to get too deep, but provide a roadmap for decision-making and point you to additional resources as needed. If you want to become really familar with the concepts I'll point you to the Practical stats course the we have provided with Dr. Helsel in the past (note sure if/when it will continue with his retirement) but again the USGS statistical methods in water reosurces book is a must have reference for anyone doing stastical analysis of water quality data.}
+
+---
+
+# Base concepts
+
+---
+
+# Exploratory Data Analysis
+
+First step in any data analysis is to \alert{plot your data}.
+
+* Graphical methods provide quick visual summaries of data.
+* Easily interpreted.
+* Describes essential information more easily than numbers alone.
+
+\note<1>{Your first task with any assessment is to plot your data. There are a plethora of tools available to us now days to do this quickly and easily. We do this to get a quick and easy to intpret understanding of the data. Summary numbers alone can cause us to miss important information that are plainly obvious when plotted.}
+
+---
+
+# Exploratory Data Analysis
+
+```{r}
+#| label: anscombe
+#| fig-cap: Four different datasets with the same mean, variance, correlation, slope and intercept. Dataset is known as Anscombe's quartet.
+#| out-width: "75%"
+
+
+library(tidyverse)
+library(mpsTemplates)
+library(twriTemplates)
+library(patchwork)
+
+anscombe_m <- data.frame()
+
+for(i in 1:4)
+  anscombe_m <- rbind(anscombe_m, data.frame(set=i, x=anscombe[,i], y=anscombe[,i+4]))
+
+ggplot(anscombe_m, aes(x, y)) + 
+  geom_point(shape = 21, size = 3) + 
+  geom_smooth(method = "lm", fill = NA, fullrange = TRUE) + 
+  facet_wrap(~set, ncol = 2) +
+  theme_mps_noto()
+```
+
+\note<1>{This figure is often used to emphasize the importance of plotting your data. These 4 sets of data are called Anscombe's quartet. If you calculate the mean, variance, correlation, slope and intercept of these data without looking, you would make some incorrect statements about the underlying data.}
+
+---
+
+# Available graphical methods
+
+
+* Histograms and density plots
+* Quantile plots (cumulative density function)
+* Boxplots
+* Probability plots
+* Scatterplots
+
+\note<1>{These are your basic graphical tools to explore data, routines for most of these are available in Excel and all major statistical software. These tools will help you assess the distribution, variance, mean or median, and general relationship between variables.}
+
+---
+
+# Histograms and density plots
+
+* Histograms plot the count of observed values within equally spaced bins. 
+* Displays the distribution, skewness, and variability of the data.
+* Density plots are smoothed versions of histograms.
+
+```{r}
+#| label: histogram
+#| fig-cap: Histogram and density plot of 15-minute DO measurements.
+#| fig-width: 6
+#| fig-height: 3
+#| out-width: "75%"
+df <- mission_aransas_nerr |> 
+  filter(F_DO_mgl == "<0>")
+
+p1 <- ggplot(df) +
+  geom_histogram(aes(DO_mgl), fill = "steelblue") +
+  scale_y_continuous(expand = expansion(mult = c(0,0.05))) +
+  labs(x = "DO (mg/L)", y = "Count") +
+  theme_mps_noto()
+
+p2 <- ggplot(df) +
+  geom_density(aes(DO_mgl), fill = "steelblue") +
+  scale_y_continuous(expand = expansion(mult = c(0,0.05))) +
+  labs(x = "DO (mg/L)", y = "Density") +
+  theme_mps_noto()
+
+p1 + p2
+```
+
+\note<1>{On the left, is an example of a histogram, the height of each bar is equal to the count of observations within that bin of values. Each bin is equally spaced. The histogram shows if your data is skewed and the relative variability of your data. One potential issue with histograms is choosing the bin size. You may need to make a couple of different histograms increasing and descreasing the number of bins or the size of the bins. The density plot on the right is basically a smoothed version of the histogram. Density plots reduce the need to manipulate bin size, many statstical software include automatic smoothness selection methods for these plots, but you have the option of manually adjusting the bandwith of the underlying density estimator used to produce these plots.}
+
+---
+
+# Quantile plots
+
+* Provides information about the distribution of observed values.
+* Shows the probability that a random variable will be less than or equal to specific value x.
+* Also called empirical cumulative distribution functions (ecdf).
+* A flow duration curve is an inverse version of the ecdf using descending ranks instead of ascending ranks.
+
+```{r}
+#| label: quantile
+#| fig-cap: Quantile plot of 2-years of mean daily streamflow values
+#| fig-width: 6
+#| fig-height: 3
+#| out-width: "75%"
+neon_stage_discharge |> 
+  filter(finalDischarge >= 0) |> 
+  ggplot() +
+  stat_ecdf(aes(finalDischarge), geom = "point")  +
+  scale_y_continuous(expand = expansion(mult = c(0,0))) +
+  scale_x_continuous(expand = expansion(mult = c(0,0.05))) +
+  labs(x = "Streamflow (cms)", y = "Cumulative frequency") + 
+  theme_mps_noto()
+```
+
+\note<1>{Quantile plots are approximations of the cumulative distribution function, or the probability that a variable will be less than or equal to some value. The vertical axis are quantiles 0 to 1 representing the smallest and largest possible values. The quantiles are calculated by ranking the values and applying a plotting position formula. Quantiles such as 0.5 or the median can be quickly identified, once you get used to them, the skew and distribution can be identified. Big advantages are that all the data is displayed, there is no interpretation of bins/categories/or smoothing functions. The disadvantage of the quantile plot is that they are clearly harder to interprt when you are not familiar with them.}
+
+---
+
+# Boxplots
+
+Boxplots are concise displays of the median, variation, skew, and outliers. These can also be used to compare attributes between datasets or sites.
+
+```{r}
+#| label: boxplots
+#| fig-cap: Boxplots of dissolved oxygen concentrations at 5 sites.
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: "100%"
+p1 <- ggplot(dissolved_oxygen) +
+  geom_boxplot(aes(as.factor(station_id),
+                   average_do,
+                   group = station_id)) +
+  labs(x = "Station", y = "Daily Average DO (mg/L)") +
+  theme_mps_noto()
+
+p1 + ggplot_box_legend(point_label = " - Outliers" )
+```
+
+\note<1>{Boxplots a consice displays of various summary statistics and distribution. The centerline represents the median, the heigh of the box is the variance or spread, and you can infer the skew based on the size of the boxes above or below the median. Outliers are shown as points beyond the boxplot whiskers. Most statistical software have functions to generate boxplots. One disadvantge of boxplots is they don't visualize the data points so you might mis details like bimodal distributions. This can be overcome by overlaying points on the boxplot itself.}
+
+---
+
+# Probability plots
+
+Also called a quantile-quantile (Q-Q) plot. This is the quantile plot generated earlier plotted against quantiles from a theoretical distribution. These are used to evaluate how well the data fits against distributions such as the normal, log-normal, or gamma distribution.
+
+```{r}
+#| label: qqplot
+#| fig-cap: Q-Q plot shows sample quantiles match well against theoretical quantiles using the Gamma distribution.
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: "100%"
+library(MASS)
+df <- neon_stage_discharge |> 
+  filter(finalDischarge >= 0) 
+
+p1 <- ggplot(df) +
+  geom_histogram(aes(finalDischarge)) +
+  labs(x = "Discharge (cms)", y = "Count", title = "Histogram of streamflow data") +
+  theme_mps_noto()
+  
+
+# fit a lognormal distribution
+fit_params <- fitdistr(df$finalDischarge,"gamma")
+
+# create a vector of quantiles
+quants <-seq(0,1,length=81)[2:80]
+
+
+# find quantiles for the fitted distribution
+fit_quants <- qgamma(quants, fit_params$estimate['shape'], fit_params$estimate['rate'])
+
+# find quantiles of the original data
+data_quants <- quantile(df$finalDischarge,quants)
+
+
+p2 <- ggplot(tibble(x = fit_quants, y = data_quants)) + 
+  geom_point(aes(x,y)) +
+  geom_abline(slope = 1) +
+  labs(x = "Theoretical Quantiles", y = "Sample Quantiles",
+       title = "Q-Q plot of Gamma distribution against data") +
+  theme_mps_noto()
+
+p1 + p2
+
+
+```
+\note<1>{Probability plots also called q-q plots plot quantiles estiamted from the data against qunatiles from any theoretical distribution, such as the normal, log-normal, or gamma distrbutions. The histogram on the left shows a skewed dataset that might be log-normal or gamma distributed. The Q-Q plot confirms the sample quantiles generally follow the quantiles from the theoretical Gamma distribution quite well.}
+
+---
+
+# Scatterplots
+
+Typically used to plot two continous variables against each other, or a continuous variable over time.
