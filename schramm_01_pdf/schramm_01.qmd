@@ -1016,11 +1016,12 @@ Available tools:
 * TCEQ assessment criteria (for ambient water quality)
 * Statistical power analysis: @helselStatisticalMethodsWater2020 Chapter 13
 
-\note<1>{We could have a whole data on how much data you need, but I'm going to point you to two different resources. First, TCEQ's assessment procedures are very good for general characterization or reconasiance type approaches. They provide clear guidance for duration and sample size needed to make statisically based decisions according to the state's numeric criteria. If you are using a watershed or plot trial, chapter 13 of the USGS stastical methods in water reources handbook, is excellent. This discusses how to do something called power analysis to estimate the statstical power of your approach based on the number of samples and expected variance. Stastical power is essentially how likely your stasstical test is to correctly idenfity an effect when there actually is an effect. We typically aim for a power of 80% but that is not a hard and fast rule.}
+\note<1>{We could have a whole data on how much data you need, but I'm going to point you to two different resources. First, TCEQ's assessment procedures are very good for general characterization or reconasiance type approaches. They provide clear guidance for duration and sample size needed to make statisically based decisions according to the state's numeric criteria. If you are using a watershed or plot trial, chapter 13 of the USGS stastical methods in water reources handbook, is excellent. This discusses how to do something called power analysis to estimate the statstical power of your approach based on the number of samples and expected variance. Stastical power is essentially how likely your stasstical test is to correctly idenfity an effect when there actually is an effect. We typically aim for a power of 80\% but that is not a hard and fast rule.}
 
 ---
 
 # Sufficient data
+
 :::: {.columns}
 
 ::: {.column width="70%"}
@@ -1034,9 +1035,10 @@ Available tools:
 Example power analysis for trend tests on *E. coli* concentrations over 10-years [@schrammEstimatingStatisticalPower2021].
 
 :::
+
 ::::
 
-\note<1>{Here is an example of a power analysis I conducted for detecting 10-year trends in E. coli concentrations. If you pick one of these plots, the x-axis shows the number of annual samples needed to achieve the desired stastical power on the y-axis. Each line represents a different effect size, so the light yellow lines represent if we wanted to detect a 10 percent reduction in bacteria, even at 12 samples a year, our power is only around 30-40%. But an 80% difference can be detected with only 4 samples a year with nearly 100% power. There are lots of methods for doing power analysis depending on your goals, I don't see it done in our field very often, but I highly reccomend it when you are designing a project. Take a look at the resources at the end of this presentation or reach out to discuss with me.}
+\note<1>{Here is an example of a power analysis I conducted for detecting 10-year trends in E. coli concentrations. If you pick one of these plots, the x-axis shows the number of annual samples needed to achieve the desired stastical power on the y-axis. Each line represents a different effect size, so the light yellow lines represent if we wanted to detect a 10\% reduction in bacteria, even at 12 samples a year, our power is only around 30-40\%. But an 80\% difference can be detected with only 4 samples a year with nearly 100\% power. There are lots of methods for doing power analysis depending on your goals, I don't see it done in our field very often, but I highly reccomend it when you are designing a project. Take a look at the resources at the end of this presentation or reach out to discuss with me.}
 
 ---
 

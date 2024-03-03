@@ -20,7 +20,10 @@ format:
     pdf-engine: lualatex
 header-includes: |
   \definecolor{twriblue}{RGB}{0, 84, 164}
+  \definecolor{teal}{RGB}{130, 173, 170}
+  \definecolor{maroon}{RGB}{93, 0, 37}
   \setbeamercolor{palette primary}{bg=twriblue}
+  \setbeamercolor{alerted text}{fg=maroon}
 
 
 cite-method: biblatex
@@ -34,6 +37,17 @@ knitr:
 
 ---
 
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(mpsTemplates)
+library(twriTemplates)
+library(patchwork)
+library(random)
+library(kableExtra)
+
+```
 
 
 # Statistical Tools for Analysis
@@ -47,6 +61,406 @@ knitr:
 ---
 
 # Base concepts
+
+* Statistical distributions
+* Measures of central tendency
+* Concentrations vs loads
+
+\note<1>{I am going to go over three different different concepts so we are all on generally the same page. First we will talk about statistical distributions because they serve an important role in how we determine what types of data analysis we can do. Then a couple measures of central tendency that we can use to describe data, and final a short discussion about concentrations and loads.}
+
+---
+
+# Statistical distributions
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+```{r}
+#| label: distributions1
+#| out-width: "100%"
+#| fig-width: 4
+#| fig-height: 4
+
+set.seed(100)
+tibble(label = "normal",
+       x = rnorm(1000, mean = 10)) |> 
+  bind_rows(tibble(label = "lognormal",
+                   x = rlnorm(1000))) |> 
+    bind_rows(tibble(label = "gamma",
+                   x = rgamma(1000, 2))) |> 
+  ggplot(aes(x=x, fill=label)) +
+  geom_density(alpha = 0.5) +
+  theme_void() +
+  theme(legend.position = "none",
+        axis.line.x.bottom = element_line(linewidth = 1, color = "black"),
+        axis.line.y.left = element_line(linewidth = 1, color = "black"))
+
+```
+:::
+
+:::{.column width="50%"}
+
+:::
+
+
+::::
+
+\note<1>{Let's talk about statistical distributions, does anyone have a good definiation or practical explanation for what a distribution is?}
+
+---
+
+# Statistical distributions
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+```{r}
+#| label: distributions2
+#| out-width: "100%"
+#| fig-width: 4
+#| fig-height: 4
+
+set.seed(100)
+tibble(label = "normal",
+       x = rnorm(1000, mean = 10)) |> 
+  bind_rows(tibble(label = "lognormal",
+                   x = rlnorm(1000))) |> 
+    bind_rows(tibble(label = "gamma",
+                   x = rgamma(1000, 2))) |> 
+  ggplot(aes(x=x, fill=label)) +
+  geom_density(alpha = 0.5) +
+  theme_void() +
+  theme(legend.position = "none",
+        axis.line.x.bottom = element_line(linewidth = 1, color = "black"),
+        axis.line.y.left = element_line(linewidth = 1, color = "black"))
+
+```
+
+:::
+
+:::{.column width="50%"}
+
+A statistical distribution is a rule or function that describes the probability that a variable takes on some range of values.
+
+:::
+
+
+
+::::
+
+\note<1>{A simple definition is that a statistical distribution is a rule or mathematical function that describes the probability that a variable takes on some range of values.}
+
+---
+
+# Statistical distributions
+
+* For the most part we deal with normally distributed, log-normal, or gamma distributions. 
+* Influences our choice of statistical tests.
+
+
+```{r}
+#| label: distributions3
+#| out-width: "100%"
+#| fig-width: 8
+#| fig-height: 4
+set.seed(100)
+p1 <- tibble(x = rnorm(n=10000, mean = 10, sd = 2)) |> 
+  ggplot(aes(x)) +
+  geom_density(fill="steelblue") +
+  theme_mps_noto() +
+  labs(title = "Normal")
+
+p2 <- tibble(x = rlnorm(n=10000)) |> 
+  ggplot(aes(x)) +
+  geom_density(fill="steelblue") +
+  theme_mps_noto() +
+  labs(title = "Log-normal")
+
+p3 <- tibble(shape = c(1,2,3,5,9),
+             scale = c(2,2,2,1,0.5)) |> 
+  mutate(x = map2(shape, scale, \(shape, scale) rgamma(10000, shape = shape, scale = scale))) |> 
+  unnest(x) |> 
+  mutate(label = paste("shape=", shape, ", scale=", scale)) |> 
+  ggplot(aes(x)) +
+  geom_density(aes(color = label)) +
+  theme_mps_noto() +
+  labs(title = "Gamma") +
+  theme(legend.position = "right",
+        legend.direction = "vertical",
+        legend.title = element_blank())
+
+
+p1 + p2 + p3
+  
+```
+
+
+
+\note<1>{The shape and the area under the normal distribution is mathematically described with two paramters, the mean and standard deviation. The log-normal distribution is normally distributed when values are log transformed, and described by the log mean and the log standard deviation. The shape and area of the Gamma distribution is described using two parameters names the shape and rate parameters. The Gamma distribution is always positive and skewed, it can appear similar to the log-normal distribution. For topics we cover today you really only need to be aware that we can use parametric tests on normally distributed data, and rely on nonparametric tests for other distributions.}
+
+---
+
+# Measures of central tendency
+
+* **Mean**: Sum divided by number of samples.
+* **Median**: Midpoint of all values or mean of two middle values.
+* **Mode**: Most likely value.
+
+```{r}
+#| label: sumstats1
+#| out-width: "100%"
+#| fig-width: 8
+#| fig-height: 4
+
+
+Mode <- function(x) {
+  d <- density(x)
+  d$x[which.max(d$y)]
+}
+
+# right skew
+df_1 <- tibble(x = rbeta(10000,1,5))
+# left skew
+df_2 <- tibble(x = rbeta(10000,5,1))
+# symmetric
+df_3 <- tibble(x = rnorm(10000,0.5,0.1))
+
+p1 <- ggplot(df_1, aes(x)) +
+  geom_histogram(aes(y = ..density..)) +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "median"), fun = "median", colour = "red", linewidth = 0.5, geom = "vline") +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "mean"), fun = "mean", colour = "red", linewidth = 0.5, geom = "vline") +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "mode"), fun = "Mode", colour = "red", linewidth = 0.5, geom = "vline") +
+  scale_linetype_manual("", values = c("solid", "dashed", "dotted")) +
+  theme_mps_noto() +
+  labs(title = "Right Skewed Data", x = "")
+
+p2 <- ggplot(df_2, aes(x)) +
+  geom_histogram(aes(y = ..density..)) +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "median"), fun = "median", colour = "red", linewidth = 0.5, geom = "vline") +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "mean"), fun = "mean", colour = "red", linewidth = 0.5, geom = "vline") +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "mode"), fun = "Mode", colour = "red", linewidth = 0.5, geom = "vline") +
+  scale_linetype_manual("", values = c("solid", "dashed", "dotted")) +
+  theme_mps_noto() +
+  labs(title = "Left Skewed Data", x = "")
+
+p3 <- ggplot(df_3, aes(x)) +
+  geom_histogram(aes(y = ..density..)) +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "median"), fun = "median", colour = "red", linewidth = 0.5, geom = "vline") +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "mean"), fun = "mean", colour = "red", linewidth = 0.5, geom = "vline") +
+  stat_summary(aes(x = 0, y = x, xintercept = stat(y), linetype = "mode"), fun = "Mode", colour = "red", linewidth = 0.5, geom = "vline") +
+  scale_linetype_manual("", values = c("solid", "dashed", "dotted")) +
+  theme_mps_noto() +
+  labs(title = "Symmetric Data", x = "")
+
+p1 + p2 + p3 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+```
+
+
+\note<1>{Measures of central tendancy, or averages, represent a central or typical value from a sample. The most common are mean, medians and modes. For symetric datasets, the mean median and mode are roughly the same. For skewed datasets, the mean gets pull towards the tail or more extreme values. We typically use median in skewed datasets.}
+
+---
+
+# Measures of central tendency
+
+The **geometric mean** is typically used with data that are extremely variable (bacteria).
+
+* **Geometric mean**: Average of log transformed values converted back to real (base 10) number.
+* Calculate by exponentiating the mean of log transformed values:
+* OR, the $nth$ root of the product of $n$ numbers.
+
+\note<1>{The other commonly used measure is the geometric mean. We typically use this with extremely skewed data such as bacteria. It is calculated by log transforming the values then taking the average, then exponentiating it back.}
+
+---
+
+# Measures of central tendency
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+## Example Dataset
+
+| Sample number | *E. coli* |
+|---------------|-----------|
+| 1 | 5 |
+| 2 | 26 |
+| 3 | 50 |
+| 4 | 30 |
+| 5 | 890 |
+| 6 | 15 |
+| 7 | 100 |
+ 
+ * *Mean* = 159
+ * *Geomean* = 43
+ * *Median* = 30
+
+:::
+
+::: {.column width="70%"}
+
+* The geomean is the average but less influenced by the few extreme values.
+* Median still represents the middle value.
+
+:::
+
+
+::::
+
+\note<1>{Here is an example using some E. coli data. We see the extreme values pull the Mean much higher than the median and geometric mean.}
+
+---
+
+\section{Concentrations and Loads}
+
+\note<1>{Does anybody want to describe the differences between water quality loads and concentrations? Why might twe be interested in one or the other?}
+
+---
+
+# Concentrations and Loads
+
+::::{.columns}
+
+:::{.column width="40%"}
+**Concentrations** represent the amount of pollutant at a given point in time.
+
+* Instantaneous effect
+* Density based units, mg/L, cfu/100mL, etc.
+
+:::
+
+:::{.column width="60%"}
+
+![](images/concentration.png)
+:::
+
+::::
+
+\note<1>{Concentrations are the amount of substance dissolved or suspended in a volume of liquid. This is measured with a grab sample, lab analysis or sensor and represents a specifci point in time. Concentration is constantly variable across space and time. We graba snapshot of it. }
+
+---
+
+# Concentrations and Loads
+
+::::{.columns}
+
+:::{.column width="40%"}
+
+**Loads** represent mass over time
+
+* Cumulative effect
+* Units are mass based, pounds/year, kg/month, etc.
+
+:::
+
+:::{.column width="60%"}
+
+![](images/discharge.png)
+:::
+
+::::
+
+\tiny Image USGS public domain.
+
+\note<1>{Loads represnet a cumulative amoount of pollutant}
+
+---
+
+# Concentrations and Loads
+
+Water volume over time is required to convert concentration to loads.
+
+```{mermaid}
+%%| mermaid-format: png
+%%| fig-width: 3
+
+flowchart TB
+  A("`**Concentration (mg/L)**`"):::hlbg --> one
+  subgraph one[Daily water volume]
+  B("Streamflow (cfs) or Runoff volume (cubic feet per day)")
+  end
+  one --> C("`**Load (lbs/day)**`"):::hlbg
+  classDef hlbg stroke:#e64173,stroke-width:4px
+```
+
+
+\note<1>{In order to convert from concentration to load we have to have the the total volume of water in a given day or whichever time unit you are interested in. Typically we use mean daily flow from a streamflow gage or the total volume reported by a runoff monitoring station.}
+
+---
+
+# Concentrations and Loads
+
+
+## Convert concentration to loads:
+
+$$
+Load (lbs/day) = \frac{mg}{L} \times 28.32\frac{L}{ft^3} \times \frac{ft^3}{day} \times1E6 \frac{mg}{kg} \times 2.2046 \frac{lbs}{kg}
+$$
+
+* Always check units and conversion factors.
+
+\note<1>{This is an example calculation going from mg/L concentation to pounds per day. First we convert the concentration in liters to concentration in cubic feet. We mutliply that by the volume of water in cubic feet to get the total volume in milligrams. Some simple conversions are available to convert from milligrams to pounds.}
+---
+
+# Concentrations and Loads
+
+
+![](images/loads_tiaer.png){width="50%"}
+
+\tiny Image Anne McFarland (TIAER)
+
+\note<1>{Here we see streamflow or discharge volume can effect loads and concentrations differently. The top plots show that as we move upstream to downstream phosphorus concentration decline with incrasing river volume. However loads increase with river volume. What does this tell us? River volume is the primary driver of loading. Think about the units we use, relatively large variations in concentration have small impacts on loads, but small variations in flow will make big differences in total loads.}
+
+---
+
+# Concentrations and Loads
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/kuhnert.png)
+
+\tiny Image: @kuhnertQuantifyingTotalSuspended2012
+
+:::
+
+:::{.column width="50%"}
+
+![](images/tiaer_po4.png)
+
+\tiny Image Anne McFarland (TIAER)
+
+:::
+
+::::
+
+
+\note<1>{This doesn't mean streamflow is not important to consider for concentrations. Within one site, streamflow can drive variation in pollutant concentration. For NONpoint sources, concentrations may increase, while point source dominated pollutants may decrease with increased flows.}
+
+---
+
+
+# Concentrations and Loads
+
+These are different measurements, why are we concerned about both?
+
+* To estimate progress in rivers/streams we want to understand changes in concentration.
+* To estimate progress in the watershed we want to understand changes in flow-normalized loads.
+* To estimate progress in estuaries or lake/reservoir ecosystems we want to understand total loads.
+
+\small Robert Hirsch (USGS).
+
+\note<1>{So why all the bother with loads and concentrations? Typically, if we are interested in stream/river health or exposure and risk for humans, we want to understand how pollutant concentrations are responding. Exposure risks or ecosystem responses are typically based on some concentration thresholds. If we are interested in how watersehd water quality is changing across the landscape we have to assess loads because we can't measure concentration at every point across the landscape. Better yet, we use flow-normalization methods to account for variations in preciptation and runoff and allow us to compare loads between wet and dry periods. Finally if are primary objective is an estuary or lake system, we are primarily interested in changes in the total loads delivered to the system. Assuming the volume of water is relatively constant over time in a lake or estuary, the total mass of pollutants delivered provides an appropriate metric.}
+
+
+---
+
+
+\section{Exploratory Data Analysis}
+
+\note<1>{Before we move into exploratory data analysis, any questions?}
 
 ---
 
@@ -234,10 +648,304 @@ p1 + p2
 
 
 ```
-\note<1>{Probability plots also called q-q plots plot quantiles estiamted from the data against qunatiles from any theoretical distribution, such as the normal, log-normal, or gamma distrbutions. The histogram on the left shows a skewed dataset that might be log-normal or gamma distributed. The Q-Q plot confirms the sample quantiles generally follow the quantiles from the theoretical Gamma distribution quite well.}
+
+\note<1>{Probability plots also called q-q plots plot quantiles estimated from the data against qunatiles from any theoretical distribution, such as the normal, log-normal, or gamma distrbutions. The histogram on the left shows a skewed dataset that might be log-normal or gamma distributed. The Q-Q plot confirms the sample quantiles generally follow the quantiles from the theoretical Gamma distribution quite well.}
 
 ---
 
-# Scatterplots
+\section{Statistical design for watershed studies}
 
-Typically used to plot two continous variables against each other, or a continuous variable over time.
+\note<1>{Onto statistical design. My goal is to provide a road map for choosing or applying appropriate statstical methods without diving into theory. There are a couple of free text references at the end of this presentation the go much more in depth. But the primary goal is to understand what data you have, your study design, then choose the right statstical approach. Which, spoiler, there isn't always just one correct way to do things.}
+
+---
+
+# Single watershed study
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/single_watershed.png)
+
+:::
+
+::: {.column width="50%"}
+
+* Comparing concentrations before and after implementation.
+* **Parametric t-test** or **nonparametric Rank-sum test**.
+* Null hypothesis: average concentrations before and after implementation are equal.
+* **Flow-weighting averages** can be used to emphasize high flows.
+
+:::
+
+::::
+
+\note<1>{In a single watershed study we can compare the means before and after implementation. Typically we will use a parametric t-test on log-transformed concentrations, or the non-paramteric Rank Sum test on raw values. If you have flow or discrage data, then we can use something called flow-weighted averages. }
+
+---
+
+# Flow-Weighted Average
+
+Example:
+
+| Concentration (mg/L) | Flow (cfs) |
+|----------------------|------------|
+| 0.45 | 10 |
+| 2.30 | 0.01 |
+| 0.75 | 15 |
+
+$$
+\frac{(0.45\times10)+(2.30\times0.01)+(0.75\times15)}{10+0.01+15} = 0.63mg/L
+$$
+
+$$
+\frac{0.45+2.30+0.75}{3}=1.17mg/L
+$$
+\note<1>{Here is an example of a flow-weighted average. You multiply the observed concentration by the measured flow and divide by the sum of wieghts. The weighting factor, flow, gives more emphasis to concentrations at high flow than at low flows. }
+
+
+---
+
+# Permutation Test
+
+* **Parametric tests** on log-transformed values provide information about the geometric mean.
+* **Non-parametric tests** tell you about the median.
+* If you need information about the mean use a **permutation test**.
+
+\note<1>{Typically we will use a parametric t-test on log-transformed concentrations, or the non-paramteric Rank Sum test on raw values. But because we transform log values in the parametric test, we are actually infering about the geometric mean when we back transform our data after the test. Conversely, non-parametric tests typcially internally transform data into ranks, the result is we are detecting differences in medians. Typically this is fine, but make sure you report your results accordingly. If you must report differences in means, we can use permutation tests. Permutation tests are nice because we don't need to know anything about the distribution and it is still valid.}
+
+
+---
+
+# Permutation Test
+
+```{r}
+#| label: permutations
+#| fig-cap: Permutations randomly shuffle that data between groups. Assuming there is no difference between the groups, new reshuffles will have approximately the same differences.
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: "100%"
+
+set.seed(101)
+x1 <- rlnorm(100, meanlog = log(126), sdlog = 1)
+x2 <- rnorm(100, mean = 300, sd = 100)
+
+s1 <- tibble(label = "control", group = 0, x = x1) |> 
+  bind_rows(tibble(label = "treatment", group = 1, x = x2))
+
+p1 <- ggplot(s1) +
+  geom_point(aes(group, x, color = label), position = position_jitter(width = 0.2)) +
+  labs(x = "Group", y = "Value") +
+  scale_y_log10() +
+  scale_x_discrete() +
+  theme_mps_noto() +
+  theme(axis.text.x = element_blank(),
+        legend.title = element_blank())
+
+
+s2 <- tibble(label = "control", x = x1) |> 
+  bind_rows(tibble(label = "treatment", x = x2)) |> 
+  mutate(group = randomNumbers(n = 200, min = 0, max = 1, col = 1))
+
+p2 <- ggplot(s2) +
+  geom_point(aes(group, x, color = label), position = position_jitter(width = 0.2)) +
+  labs(x = "Group", y = "Value") +
+  scale_y_log10() +
+  scale_x_discrete() +
+  theme_mps_noto() +
+  theme(axis.text.x = element_blank(),
+        legend.title = element_blank())
+
+s3 <- tibble(label = "control", x = x1) |> 
+  bind_rows(tibble(label = "treatment", x = x2)) |> 
+  mutate(group = randomNumbers(n = 200, min = 0, max = 1, col = 1))
+
+p3 <- ggplot(s3) +
+  geom_point(aes(group, x, color = label), position = position_jitter(width = 0.2)) +
+  labs(x = "Group", y = "Value") +
+  scale_y_log10() +
+  scale_x_discrete() +
+  theme_mps_noto() +
+  theme(axis.text.x = element_blank(),
+        legend.title = element_blank())
+
+p1 + p2 + p3
+  
+
+```
+
+\note<1>{Hopefully this provides a little insight into how a permutation test works. First we calculate our test statistic using the observed data between our two groups. If there is no difference between the two groups if we shuffle the values between them, we should not get a significantly different result. So we shuffle and recalculate the test result. Then re do that 1000 or more times. This gives us a distribution of possible null values of the test statistic to compare our actual results against. The precentage of values that our test statstic exceeds out of all the recalcuated values is our p-value. This approach can be adapted to most hypothesis tests which makes it suitable for most watershed study approaches.}
+
+---
+
+# Single watershed study
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/above_below.png){width="100%"}
+
+:::
+
+::: {.column width="50%"}
+* Compare upstream and downstream concentrations.
+* **Parametric paired t-test** or **non parametric signed rank test**.
+
+* Include before and after implementation as factors.
+
+* **Parametric Two factor ANOVA** or **nonparametric Brunner-Dette-Munk test**. 
+
+* Permutation tests available for each of these.
+
+:::
+
+::::
+
+\note<1>{For a single watershed study with above below design, we can use a paired t-test or signed rank test. Preferably you want to include before and after implementation data, this will be setup as a two-factor ANOVA or non-parametric Brunner-Dette-Munk test. The results will let you infer if the downstreamwater quality after implementation is significant different than before implementation and/or from the upstream station.}
+
+---
+
+# Paired Watershed Study
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/paired.png){width="100%"}
+
+:::
+
+::: {.column width="50%"}
+
+* Two-factor ANOVA, nonparametric Brunner-Dette-Munk test
+* Can be setup as a linear regression model
+* $Treated = \beta_0 + \beta_1(Control) + \epsilon$
+
+
+:::
+
+::::
+
+\note<1>{We can take a similar approach with the paired watershed study. However I'd reccomend a linear regression approach because it is flexible enough to incorporate additional variables if needed, like if you want to control for streamflow or other covariated. There are several ways to set it up, but the simpliest is to model your response variable, treatment water quality concentration, as a factor of control watershed water quality. If your measurements are not daily, you can use weekly or monthly flow weight averages to pair up data from each watershed in your linear model.}
+
+
+---
+
+# Paired Watershed Study
+
+![](images/pairedregression.png)
+
+\tiny Source: @mcfarlandControllingPhosphorusRunoff2004
+
+\note<1>{Here is an exmaple from the folks at TIAER. The linear regression in purple is the caliration period and the dashed line is the treatment period. The vertical distance between the lines is the relative reduction in concentration by the BMP treatment. The difference in slope also show a larger reduction at high run off concentration values compared to lower runoff concentation values.}
+
+---
+
+# Paired Watershed Study
+
+Weakness:
+
+* Assumes relationships in water quality between two watersheds.
+* Regression and ANOVA approach have parametric assumptions.
+
+
+Other available tools include: Generalized linear models and generalized additive models which are **semi parametric** statistical tools.
+
+\note<1>{There are a few potential issues with linear regressions in ppaired watershed studies. First we are assuming that water qulaity mechisms in both watersheds are the same, to meet this assumption, both watersheds should be nearby each other with similar land cover and land use. Second this approach requires we meet parametric assumption, such as normally distributed data. To accomodate different types of data, we start to get into more advanced statistical methods, sich as generalized linear or generalized additive models.}
+
+---
+
+# Cheet sheet
+
+```{r}
+tibble(
+  Design = c(
+    "Pre/Post",
+    "Upstream/Downstream",
+    "Paired-watershed (BACI)"
+  ),
+  Parametric = c(
+    "t-test",
+    "Paired t-test",
+    "Two-factor ANOVA or Linear regression"
+  ),
+  Nonparametric = c(
+    "Rank-sum test",
+    "Signed-rank test",
+    "Brunner-Dette-Munk test or generalized linear model"
+  ),
+  Permutation = c(
+    "Two-sample permutation test",
+    "Paired permuatation test",
+    "Two-factor permutation test"
+  )
+) |> 
+  mutate_all(linebreak) |> 
+  kbl(format = "latex",
+      booktabs = TRUE,
+      escape = F) |> 
+  column_spec(1:4, width = "10em") |> 
+  kable_styling(font_size = 7) 
+```
+
+\note<1>{Here is a short reference sheet to assist with choosing methods based on study design and the type of data you are working with.}
+
+---
+
+# Trend Analysis
+
+```{r}
+tibble(
+  Type = c("Parametric", "Nonparametric"),
+  `Unadjusted for variable X` = c("Regression of Y on T", "Mann-Kendall trend test"),
+  `Adjusted for variable X` = c("Regression of Y on X and T",
+                                "Mann-Kendall test on residuals from loess regression of Y on X")) |> 
+    kbl(format = "latex",
+      booktabs = TRUE,
+      escape = F) |> 
+  column_spec(1:3, width = "15em") |> 
+  kable_styling(font_size = 7) 
+```
+
+* Trends can be temporal or spatial.
+* $T$ can represent time or distance.
+* $X$ can represent streamflow, or precipitation.
+
+\note<1>{With trend tests, we are interested in the relative fluctuation or increase and decrease in concentrations or trends either temporally or spatially. With parametric data, this is simple, use a linear regression modelling response variable (concentration or load) as a function of time or space. Either date transformed to a numeric variable or temporal variable like river mile. We can incorporate seasonality by adding additional terms like day of the year. We often want to adjust for terms like streamflow which can ccount for the overwhelming amount of variation in water quality. For non parametric approaches, we use the Mann-Kendall test. If we want to incorporate a term like streamflow, we need to first fit a regression model to the flow-water quality relationship and obtain the residuals, or the difference between the expected and observed water quality values. The Mann-Kendall test is then applied to the residuals to obtain the flow-adjusted trend.}
+
+---
+
+# Trend Analysis
+
+![](images/wrtds.png){width="70%"}
+
+The USGS developed Weighted Regressions on Time Discharge and Season (WRTDS) tool provides functions for assessing trends in concentration, loads, and **flow-normalized** loads.
+
+* Provides ability to assess loads as if streamflow was consistent from year to year.
+* Incorporates non-linear or smoothed trends.
+* See @hirschUserGuideExploration2015.
+
+\note<1>{More recently USGS has developed a tool called WRTDS or weighted regressions on time discharge and season. This statisical tool available in R, allows us to assess actual trends, and flow normalized trends over time. The flow normalized trends can be considered the expected value if streamflow was consistent from year to year. This is an advanced and powerful tool for assessing estimated concentration and loading trends over time. However it does require substantial data, probably a minimum of 100-200 samples over 10-20 years minimum. This figure shows the actual annual nitrate load in a river over 30 years as the dots. You see substantial variation due to changes in streamflow. The green line is the flow normalized load that shows a clear steady increasing trend in load that would occur if streamflows were consistent year to year. }
+
+---
+
+# Overview
+
+- Plot/explore data.
+- Data distribution and assumptions should match the statistical approach.
+- Use flow-adjustment or flow normalization if it matches your objective/question.
+- Rarely a single correct approach.
+
+\note<1>{So in summary, if nothing else, plot your data multiple ways. Make sure your statistical approach matches your data. Keep your study objective in mind, your approach should match the objective and you might have to take extra steps such as flow adjustments to a apporpriately answer those study questions. Finally, there is rarely a single approach, we often have to weigh different apporaches and recognize specific comprimises when making a decision.}
+
+---
+
+# Major references
+
+Helsel, D. R., Hirsch, R. M., Ryberg, K. R., Archfield, S. A., & Gilroy, E. J. (2020). Statistical methods in water resources: U.S. Geological Survey techniques and methods, book 4, chapter A3. USGS. https://doi.org/10.3133/tm4a3
+
+
+USDA NRCS. (2003). National Water Quality Handbook Part 614. USDA NRCS. https://archive.epa.gov/water/archive/web/pdf/stelprdb1044775.pdf
+
+
